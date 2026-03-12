@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>遊戲販售頁</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: #0a0a0f; color: #e8e0d4; min-height: 100vh; }
+
+  /* Age gate overlay */
+  #age-gate {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; padding: 2rem;
+  }
+  .gate-box {
+    background: #13121a; border: 1px solid #3a2a4a;
+    border-radius: 16px; padding: 2.5rem; max-width: 360px; width: 100%;
+    text-align: center;
+  }
+  .gate-warning { font-size: 2.5rem; margin-bottom: 1rem; }
+  .gate-box h2 { font-family: 'Noto Serif TC', serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: #f0e8ff; }
+  .gate-box p { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; line-height: 1.6; }
+  .gate-buttons { display: flex; gap: 12px; }
+  .btn-confirm {
+    flex: 1; padding: 0.75rem; border: none; border-radius: 8px;
+    background: #7c3aed; color: #fff; font-size: 0.95rem; cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif; transition: background 0.2s;
+  }
+  .btn-confirm:hover { background: #6d28d9; }
+  .btn-deny {
+    flex: 1; padding: 0.75rem; border: 1px solid #3a2a4a; border-radius: 8px;
+    background: transparent; color: #888; font-size: 0.95rem; cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif; transition: all 0.2s;
+  }
+  .btn-deny:hover { border-color: #666; color: #aaa; }
+
+  /* Main content */
+  #main-content { display: none; }
+
+  /* Hero */
+  .hero {
+    min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    padding: 4rem 2rem; text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, #2d1b4e 0%, #0a0a0f 60%);
+    border-bottom: 1px solid #1e1a2e;
+  }
+  .hero-inner { max-width: 640px; }
+  .badge {
+    display: inline-block; background: #2d1b4e; border: 1px solid #5b21b6;
+    color: #c4b5fd; font-size: 0.75rem; padding: 4px 12px;
+    border-radius: 99px; margin-bottom: 1.5rem; letter-spacing: 0.05em;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif; font-size: clamp(2rem, 6vw, 3.2rem);
+    line-height: 1.2; color: #f0e8ff; margin-bottom: 1rem;
+    text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+  }
+  .hero p { font-size: 1rem; color: #9d8fb0; line-height: 1.7; margin-bottom: 2rem; }
+  .price-tag { font-size: 0.9rem; color: #6b5c7a; text-decoration: line-through; margin-bottom: 4px; }
+  .price-main { font-size: 2.4rem; font-weight: 700; color: #c4b5fd; margin-bottom: 1.5rem; }
+  .price-main span { font-size: 1.1rem; color: #9d8fb0; }
+
+  .btn-buy {
+    display: inline-block; padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 1.1rem; font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.4);
+  }
+  .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124, 58, 237, 0.6); }
+  .btn-buy:active { transform: translateY(0); }
+
+  .secure-note {
+    margin-top: 1rem; font-size: 0.8rem; color: #5a4d6a;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  /* Features */
+  .features { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }
+  .features h2 {
+    font-family: 'Noto Serif TC', serif; font-size: 1.5rem;
+    text-align: center; margin-bottom: 2.5rem; color: #e8e0d4;
+  }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .feature-card {
+    background: #13121a; border: 1px solid #1e1a2e; border-radius: 12px;
+    padding: 1.25rem; transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: #3a2a4a; }
+  .feature-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .feature-card h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.4rem; color: #d4cce8; }
+  .feature-card p { font-size: 0.82rem; color: #6b5c7a; line-height: 1.6; }
+
+  /* Payment section */
+  .payment-section { padding: 3rem 2rem; background: #0d0c14; text-align: center; }
+  .payment-section h2 {
+    font-family: 'Noto Serif TC', serif; font-size: 1.2rem;
+    margin-bottom: 1.5rem; color: #9d8fb0;
+  }
+  .payment-methods { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .pay-badge {
+    background: #13121a; border: 1px solid #1e1a2e;
+    border-radius: 8px; padding: 8px 16px; font-size: 0.82rem; color: #888;
+  }
+
+  /* Footer */
+  footer {
+    padding: 2rem; text-align: center; font-size: 0.78rem;
+    color: #3a3249; border-top: 1px solid #13121a;
+  }
+</style>
+</head>
+<body>
+
+<!-- Age Gate -->
+<div id="age-gate">
+  <div class="gate-box">
+    <div class="gate-warning">⚠️</div>
+    <h2>年齡確認</h2>
+    <p>本內容包含成人限制素材（18禁）。<br>請確認您已年滿 18 歲方可進入。</p>
+    <div class="gate-buttons">
+      <button class="btn-confirm" onclick="enterSite()">我已年滿 18 歲</button>
+      <button class="btn-deny" onclick="denyEntry()">未滿 18 歲</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Site -->
+<div id="main-content">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="badge">🔞 成人限定 · 限台灣地區</div>
+      <!-- ✏️ 修改這裡：遊戲標題 -->
+      <h1>你的遊戲標題<br>放在這裡</h1>
+      <!-- ✏️ 修改這裡：遊戲描述 -->
+      <p>在這裡描述你的遊戲內容與故事背景。<br>吸引玩家的一兩句話，讓他們想買單。</p>
+      <!-- ✏️ 修改這裡：原價 -->
+      <div class="price-tag">NT$ 599</div>
+      <!-- ✏️ 修改這裡：現價 -->
+      <div class="price-main">NT$ 299 <span>/ 限時特價</span></div>
+      <!-- ✏️ 修改這裡：將 YOUR_ECPAY_URL 換成你的綠界付款連結 -->
+      <button class="btn-buy" onclick="window.location.href='YOUR_ECPAY_URL'">立即購買</button>
+      <div class="secure-note">
+        🔒 <span>透過綠界ECPay安全付款 · 支援信用卡、ATM、超商</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="features">
+    <h2>遊戲特色</h2>
+    <div class="feature-grid">
+      <!-- ✏️ 修改這三個卡片的內容 -->
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>特色一</h3>
+        <p>在這裡描述你的遊戲特色，例如劇情、畫風、玩法等。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>特色二</h3>
+        <p>手繪插圖、精緻立繪，或是什麼讓你的遊戲與眾不同。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>特色三</h3>
+        <p>多條故事線、分支結局，或其他玩家會在意的內容。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-section">
+    <h2>支援付款方式</h2>
+    <div class="payment-methods">
+      <div class="pay-badge">💳 信用卡</div>
+      <div class="pay-badge">🏧 ATM 轉帳</div>
+      <div class="pay-badge">🏪 7-11 超商</div>
+      <div class="pay-badge">🏪 全家 FamilyMart</div>
+      <div class="pay-badge">🏪 萊爾富 Hi-Life</div>
+    </div>
+  </div>
+
+  <!-- ✏️ 修改這裡：你的名字或工作室名稱 -->
+  <footer>
+    © 2025 你的名字 / 工作室名稱 · 本網站內容僅供年滿18歲之成人瀏覽
+  </footer>
+</div>
+
+<script>
+  function enterSite() {
+    document.getElementById('age-gate').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  }
+  function denyEntry() {
+    document.getElementById('age-gate').innerHTML = '<div class="gate-box"><div class="gate-warning">🚫</div><h2>無法進入</h2><p>本網站僅供年滿18歲之成人瀏覽。</p></div>';
+  }
+</script>
+</body>
+</html>
