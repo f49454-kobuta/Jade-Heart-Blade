@@ -347,14 +347,19 @@
     border-top: 1px solid rgba(180,50,100,0.15);
   }
   .payment-section h2 {
-    font-family: 'Noto Serif TC', serif; font-size: 1.2rem;
-    margin-bottom: 1.5rem; color: #c080a0;
+    font-family: 'Noto Serif TC', serif; font-size: 1.4rem;
+    margin-bottom: 1.5rem; letter-spacing: 0.08em;
+    background: linear-gradient(90deg, #ffb0d8, #ff70b0, #ffb0d8);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
   }
   .payment-methods { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .pay-badge {
     background: rgba(40,8,24,0.8);
     border: 1px solid rgba(180,50,100,0.25);
-    border-radius: 8px; padding: 8px 16px; font-size: 0.82rem; color: #906080;
+    border-radius: 8px; padding: 8px 16px; font-size: 0.82rem; color: #f0c0d8;
   }
 
   footer {
@@ -430,16 +435,37 @@
   <div class="features">
     <h2>遊戲特色</h2>
     <div class="feature-grid">
+
+      <!-- 沙盒回合制 -->
+      <div class="feature-card" style="grid-column: 1 / -1;">
+        <div class="feature-icon">🗺️</div>
+        <h3>自由江湖・沙盒回合制</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 0.75rem;">
+          <div>
+            <div style="font-size: 0.8rem; color: #c090a8; letter-spacing: 0.08em; margin-bottom: 0.75rem;">沙盒世界</div>
+            <p style="font-size: 0.82rem; color: #80506a; line-height: 1.9;">這片江湖沒有強迫你走的路。你可以自由穿梭各地，踏遍每一座城池與山野，也可以在某個角落駐足，與NPC閒話家常，探聽江湖秘聞。<br><br>
+            世界各地藏有大量支線任務與隱藏事件，有些輕鬆有趣，有些牽動著整個江湖的格局。收集珍稀武學秘笈、培養角色成長，每一次探索都可能帶來意想不到的收穫。<br><br>
+            <span style="color: #c090a8;">走哪條路，做哪些事，全由你決定。</span></p>
+          </div>
+          <div>
+            <div style="font-size: 0.8rem; color: #c090a8; letter-spacing: 0.08em; margin-bottom: 0.75rem;">回合制戰鬥</div>
+            <p style="font-size: 0.82rem; color: #80506a; line-height: 1.9;">戰鬥不靠反應速度，靠的是判斷與謀略。每一回合，行動順序都是勝負的關鍵，先手的優勢、後手的反制，稍有不慎便可能全盤皆輸。<br><br>
+            招式之間的互相剋制構成了戰鬥的核心博弈。對手出招的瞬間，你需要快速判斷，是硬接、是閃避，還是以攻代守？<br><br>
+            <span style="color: #c090a8;">不是最強的人贏，是最懂得見招拆招的人贏。</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 武學博弈 -->
       <div class="feature-card" style="grid-column: 1 / -1;">
         <div class="feature-icon">⚔️</div>
         <h3>見招拆招的武學博弈</h3>
-        <p style="margin-bottom: 1.2rem;">江湖武學，從來不只是拳腳相加。每一招式皆有其形、其意、其勢——出招之際，攻中帶守，守中藏攻，招招相扣，環環相制。<br><br>
-        本作武學系統以「見招拆招」為核心博弈邏輯。招式施展時，不僅能對敵方造成傷害、提升自身命中，同時附帶防禦強化或迴避提升的效果。高手過招，勝負往往不在一擊之力，而在於如何以己之招，破敵之勢。</p>
+        <p style="margin-bottom: 1.2rem; font-size: 0.82rem; color: #80506a; line-height: 1.9;">江湖武學，從來不只是拳腳相加。每一招式皆有其形、其意、其勢，出招之際，攻中帶守，守中藏攻，招招相扣，環環相制。本作武學系統以「見招拆招」為核心博弈邏輯，招式施展時，不僅能對敵方造成傷害、提升自身命中，同時附帶防禦強化或迴避提升的效果。高手過招，勝負往往不在一擊之力，而在於如何以己之招，破敵之勢。</p>
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 0.5rem;">
           <div style="background: rgba(15,3,10,0.7); border: 1px solid rgba(180,50,100,0.3); border-radius: 10px; padding: 1rem;">
             <div style="font-size: 0.9rem; font-weight: 500; color: #f0c0d8; margin-bottom: 0.4rem; letter-spacing: 0.05em;">猛虎硬爬山</div>
             <div style="font-size: 0.78rem; color: #80506a; line-height: 1.7; margin-bottom: 0.6rem;">低伏沉身，雙拳前伸如虎爪抓撓，步伐沉穩而有爆發力。拳擊、肘擊、抓摔並用，氣勢威嚴如猛虎攀崖。</div>
-            <div style="font-size: 0.75rem; color: #e05080; background: rgba(220,50,80,0.12); border: 1px solid rgba(220,50,80,0.25); border-radius: 6px; padding: 3px 8px; display: inline-block;">🔻 降低敵人防禦</div>
+            <div style="font-size: 0.75rem; color: #e05080; background: rgba(220,50,80,0.12); border: 1px solid rgba(220,50,80,0.25); border-radius: 6px; padding: 3px 8px; display: inline-block;">🔻 破壞敵人防禦</div>
           </div>
           <div style="background: rgba(15,3,10,0.7); border: 1px solid rgba(180,50,100,0.3); border-radius: 10px; padding: 1rem;">
             <div style="font-size: 0.9rem; font-weight: 500; color: #f0c0d8; margin-bottom: 0.4rem; letter-spacing: 0.05em;">白蛇登樹</div>
@@ -451,8 +477,15 @@
             <div style="font-size: 0.78rem; color: #80506a; line-height: 1.7; margin-bottom: 0.6rem;">斧勢如巨龍嘯天，沉猛霸烈、力道驚人，出手每一次劈斬都帶著毀滅性的破壞力，震懾敵陣如山崩。</div>
             <div style="font-size: 0.75rem; color: #ffaa40; background: rgba(255,150,40,0.1); border: 1px solid rgba(255,150,40,0.25); border-radius: 6px; padding: 3px 8px; display: inline-block;">⚡ 威力大幅上升 ／ 自身放棄防禦</div>
           </div>
+          <div style="background: rgba(15,3,10,0.7); border: 1px solid rgba(180,50,100,0.3); border-radius: 10px; padding: 1rem;">
+            <div style="font-size: 0.9rem; font-weight: 500; color: #f0c0d8; margin-bottom: 0.4rem; letter-spacing: 0.05em;">亂剁三百下</div>
+            <div style="font-size: 0.78rem; color: #80506a; line-height: 1.7; margin-bottom: 0.6rem;">刀勢狂亂如疾雨狂風，三百連斬毫不留情，攻擊範圍廣且令人生畏。</div>
+            <div style="font-size: 0.75rem; color: #60c8a0; background: rgba(60,180,120,0.1); border: 1px solid rgba(60,180,120,0.25); border-radius: 6px; padding: 3px 8px; display: inline-block;">🎯 命中率大幅提升</div>
+          </div>
         </div>
       </div>
+
+      <!-- 柔情江湖 -->
       <div class="feature-card" style="grid-column: 1 / -1;">
         <div class="feature-icon">🌙</div>
         <h3>柔情江湖</h3>
@@ -465,17 +498,84 @@
           <img src="screenshot.png" alt="柔情江湖" style="width:100%; border-radius: 10px; border: 1px solid rgba(180,50,100,0.3); object-fit: cover; cursor: pointer;" onclick="openLightbox(this.src)">
         </div>
       </div>
+
+      <!-- 宿命糾葛 -->
       <div class="feature-card" style="grid-column: 1 / -1;">
         <div class="feature-icon">📖</div>
         <h3>宿命糾葛</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; margin-top: 0.75rem;">
           <p style="line-height: 1.9; font-size: 0.82rem; color: #80506a;">有些相遇，從一開始就注定走向對立；有些因果，埋下的那天起便再難逃脫。江湖中人，各有各的來路，各有各的宿命。有人生來便背負著血仇，一刀一劍都是為了那個說不出口的名字；有人以為自己已經放下，卻在某一個轉角，被命運拽回了原點。恩是恩，仇是仇，可恩仇之間，往往只有一線之隔。<br><br>
           翠灣城，曾是江湖中最繁華的渡口之城。然而連年的戰亂與動盪，使城中人口銳減，昔日喧囂的市井如今只餘幾分蕭條。為求城池延續，城主頒下一系列鼓勵生育的政策，力度之大令江湖人側目。<br><br>
-          從減免賦稅、官媒配對，到廣設溫柔鄉、聲色場所合法立足，政令一道比一道開放。最終，城主更頒下一條前所未聞的律令——城中任何人，皆可向他人提出交配申請，對方無論身份貴賤，若無正當理由，不得拒絕，官府為此背書，以繁衍為名，將人與人之間最私密的事，化作了一紙公文。<br><br>
+          從減免賦稅、官媒配對，到廣設溫柔鄉、聲色場所合法立足，政令一道比一道開放。最終，城主更頒下一條前所未聞的律令，城中任何人，皆可向他人提出交配申請，對方無論身份貴賤，若無正當理由，不得拒絕，官府為此背書，以繁衍為名，將人與人之間最私密的事，化作了一紙公文。<br><br>
           <span style="color: #c090a8;">有人說這是亂世之中不得不走的路，也有人說翠灣城已將人倫踩在腳下。你路過翠灣，面對這樣的政令，你會如何自處？</span></p>
           <img src="screenshot2.png" alt="翠灣城" style="width:100%; border-radius: 10px; border: 1px solid rgba(180,50,100,0.3); object-fit: cover; cursor: pointer;" onclick="openLightbox(this.src)">
         </div>
       </div>
+
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div style="padding: 4rem 2rem; max-width: 800px; margin: 0 auto;">
+    <h2 style="font-family: 'Noto Serif TC', serif; font-size: 1.4rem; text-align: center; margin-bottom: 2rem; letter-spacing: 0.08em; background: linear-gradient(90deg, #ffb0d8, #ff70b0, #ffb0d8); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite;">系統需求</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+      <div style="background: rgba(40,8,24,0.8); border: 1px solid rgba(180,50,100,0.25); border-radius: 12px; padding: 1.5rem;">
+        <div style="font-size: 0.8rem; color: #c090a8; letter-spacing: 0.1em; margin-bottom: 1rem;">最低需求</div>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1); width: 40%;">作業系統</td>
+            <td style="font-size: 0.78rem; color: #a07090; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">Windows 7 / 8 / 10 / 11</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">處理器</td>
+            <td style="font-size: 0.78rem; color: #a07090; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">Intel Core i3 同等級以上</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">記憶體</td>
+            <td style="font-size: 0.78rem; color: #a07090; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">2 GB RAM</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">顯示卡</td>
+            <td style="font-size: 0.78rem; color: #a07090; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">1024 x 768 以上解析度</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0;">儲存空間</td>
+            <td style="font-size: 0.78rem; color: #a07090; padding: 6px 0;">2 GB 以上可用空間</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="background: rgba(40,8,24,0.8); border: 1px solid rgba(220,80,140,0.4); border-radius: 12px; padding: 1.5rem; box-shadow: 0 0 20px rgba(220,80,140,0.08);">
+        <div style="font-size: 0.8rem; color: #c090a8; letter-spacing: 0.1em; margin-bottom: 1rem;">建議需求</div>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1); width: 40%;">作業系統</td>
+            <td style="font-size: 0.78rem; color: #f0c0d8; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">Windows 10 / 11（64位元）</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">處理器</td>
+            <td style="font-size: 0.78rem; color: #f0c0d8; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">Intel Core i5 同等級以上</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">記憶體</td>
+            <td style="font-size: 0.78rem; color: #f0c0d8; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">4 GB RAM</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">顯示卡</td>
+            <td style="font-size: 0.78rem; color: #f0c0d8; padding: 6px 0; border-bottom: 1px solid rgba(180,50,100,0.1);">1920 x 1080 解析度</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.78rem; color: #60354a; padding: 6px 0;">儲存空間</td>
+            <td style="font-size: 0.78rem; color: #f0c0d8; padding: 6px 0;">2 GB 以上可用空間</td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+    <div style="margin-top: 1rem; font-size: 0.75rem; color: #50253a; text-align: center; line-height: 1.7;">
+      僅支援 Windows 作業系統 · 不支援 Mac / Linux
     </div>
   </div>
 
