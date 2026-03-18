@@ -282,7 +282,7 @@
     background: linear-gradient(90deg, transparent, rgba(220,80,140,0.4), transparent);
   }
 
-  /* Gallery */
+  /* Gallery carousel */
   .gallery { padding: 4rem 2rem; max-width: 960px; margin: 0 auto; }
   .gallery h2 {
     font-family: 'Noto Serif TC', serif; font-size: 1.4rem;
@@ -293,26 +293,49 @@
     background-clip: text;
     animation: shimmer 4s linear infinite;
   }
-
-  /* 2+3 layout */
-  .gallery-top {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+  .carousel-wrap { position: relative; }
+  .carousel-track-outer {
+    overflow: hidden; border-radius: 12px;
   }
-  .gallery-bottom {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  .carousel-track {
+    display: flex; gap: 12px;
+    transition: transform 0.4s ease;
+    will-change: transform;
   }
-  .gallery-top img, .gallery-bottom img {
-    width: 100%; border-radius: 10px;
+  .carousel-track img {
+    flex-shrink: 0;
+    height: 340px; width: auto;
+    border-radius: 10px;
     border: 1px solid rgba(180,50,100,0.3);
-    object-fit: cover; aspect-ratio: 16/9;
+    object-fit: contain;
     cursor: pointer;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: rgba(10,2,8,0.6);
   }
-  .gallery-top img:hover, .gallery-bottom img:hover {
+  .carousel-track img:hover {
     border-color: rgba(220,80,140,0.8);
-    transform: scale(1.02);
     box-shadow: 0 0 20px rgba(220,80,140,0.3);
   }
+  .carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(30,5,18,0.85); border: 1px solid rgba(220,80,140,0.4);
+    color: #ffb0d8; font-size: 1.2rem; width: 40px; height: 40px;
+    border-radius: 50%; cursor: pointer; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .carousel-btn:hover { background: rgba(220,80,140,0.25); border-color: rgba(220,80,140,0.8); }
+  .carousel-btn.prev { left: -16px; }
+  .carousel-btn.next { right: -16px; }
+  .carousel-dots {
+    display: flex; justify-content: center; gap: 6px; margin-top: 1rem;
+  }
+  .carousel-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(180,50,100,0.3); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .carousel-dot.active { background: #ff70b0; transform: scale(1.3); }
 
   /* Lightbox */
   #lightbox {
@@ -435,15 +458,23 @@
 
   <div class="gallery">
     <h2>遊戲畫面</h2>
-    <div class="gallery-top">
-      <img src="2.png"   alt="遊戲畫面 1" onclick="openLightbox(this.src)">
-      <img src="T01.jpg" alt="遊戲畫面 2" onclick="openLightbox(this.src)">
+    <div class="carousel-wrap">
+      <button class="carousel-btn prev" onclick="carouselMove(-1)">&#8249;</button>
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+          <img src="2.png"   alt="遊戲畫面 1" onclick="openLightbox(this.src)">
+          <img src="T01.jpg" alt="遊戲畫面 2" onclick="openLightbox(this.src)">
+          <img src="501.png" alt="遊戲畫面 3" onclick="openLightbox(this.src)">
+          <img src="502.png" alt="遊戲畫面 4" onclick="openLightbox(this.src)">
+          <img src="503.png" alt="遊戲畫面 5" onclick="openLightbox(this.src)">
+          <img src="B15.png" alt="遊戲畫面 6" onclick="openLightbox(this.src)">
+          <img src="F06.png" alt="遊戲畫面 7" onclick="openLightbox(this.src)">
+          <img src="G15.png" alt="遊戲畫面 8" onclick="openLightbox(this.src)">
+        </div>
+      </div>
+      <button class="carousel-btn next" onclick="carouselMove(1)">&#8250;</button>
     </div>
-    <div class="gallery-bottom">
-      <img src="B15.png" alt="遊戲畫面 3" onclick="openLightbox(this.src)">
-      <img src="F06.png" alt="遊戲畫面 4" onclick="openLightbox(this.src)">
-      <img src="G15.png" alt="遊戲畫面 5" onclick="openLightbox(this.src)">
-    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
     <div style="margin-top: 1rem; text-align: center; font-size: 0.75rem; color: #50253a; letter-spacing: 0.05em;">
       ✦ 本作品所有立繪、場景圖片均由 AI 輔助生成製作 ✦
     </div>
@@ -643,9 +674,7 @@
     const video = document.getElementById('intro-video');
     intro.style.display = 'flex';
     video.play();
-    video.addEventListener('ended', function() {
-      finishIntro();
-    });
+    video.addEventListener('ended', function() { finishIntro(); });
   }
   function skipIntro() {
     document.getElementById('intro-video').pause();
@@ -658,6 +687,7 @@
     setTimeout(function() {
       intro.style.display = 'none';
       document.getElementById('main-content').style.display = 'block';
+      initCarousel();
     }, 800);
   }
   function denyEntry() {
@@ -673,6 +703,48 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // Carousel
+  let carouselOffset = 0;
+  const carouselStep = 360;
+  function initCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const dots = document.getElementById('carouselDots');
+    const imgs = track.querySelectorAll('img');
+    dots.innerHTML = '';
+    imgs.forEach(function(_, i) {
+      const d = document.createElement('div');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.onclick = function() { carouselGoTo(i); };
+      dots.appendChild(d);
+    });
+  }
+  function carouselMove(dir) {
+    const track = document.getElementById('carouselTrack');
+    const outer = track.parentElement;
+    const maxOffset = track.scrollWidth - outer.offsetWidth;
+    carouselOffset = Math.max(0, Math.min(carouselOffset + dir * carouselStep, maxOffset));
+    track.style.transform = 'translateX(-' + carouselOffset + 'px)';
+    updateDots();
+  }
+  function carouselGoTo(i) {
+    carouselOffset = i * carouselStep;
+    const track = document.getElementById('carouselTrack');
+    const outer = track.parentElement;
+    const maxOffset = track.scrollWidth - outer.offsetWidth;
+    carouselOffset = Math.min(carouselOffset, maxOffset);
+    track.style.transform = 'translateX(-' + carouselOffset + 'px)';
+    updateDots();
+  }
+  function updateDots() {
+    const track = document.getElementById('carouselTrack');
+    const imgs = track.querySelectorAll('img');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const idx = Math.min(Math.round(carouselOffset / carouselStep), imgs.length - 1);
+    dots.forEach(function(d, i) {
+      d.classList.toggle('active', i === idx);
+    });
+  }
 </script>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
