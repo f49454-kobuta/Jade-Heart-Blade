@@ -296,25 +296,20 @@
   .carousel-wrap { position: relative; }
   .carousel-track-outer {
     overflow: hidden; border-radius: 12px;
+    background: rgba(10,2,8,0.6);
   }
   .carousel-track {
-    display: flex; gap: 12px;
-    transition: transform 0.4s ease;
+    display: flex;
+    transition: transform 0.6s ease;
     will-change: transform;
   }
   .carousel-track img {
     flex-shrink: 0;
-    height: 340px; width: auto;
-    border-radius: 10px;
-    border: 1px solid rgba(180,50,100,0.3);
+    width: 100%;
+    height: 400px;
     object-fit: contain;
     cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: rgba(10,2,8,0.6);
-  }
-  .carousel-track img:hover {
-    border-color: rgba(220,80,140,0.8);
-    box-shadow: 0 0 20px rgba(220,80,140,0.3);
+    border-radius: 10px;
   }
   .carousel-btn {
     position: absolute; top: 50%; transform: translateY(-50%);
@@ -705,45 +700,44 @@
   });
 
   // Carousel
-  let carouselOffset = 0;
-  const carouselStep = 360;
+  let currentSlide = 0;
+  let slideTimer = null;
+  let totalSlides = 0;
+
   function initCarousel() {
     const track = document.getElementById('carouselTrack');
     const dots = document.getElementById('carouselDots');
     const imgs = track.querySelectorAll('img');
+    totalSlides = imgs.length;
     dots.innerHTML = '';
     imgs.forEach(function(_, i) {
       const d = document.createElement('div');
       d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      d.onclick = function() { carouselGoTo(i); };
+      d.onclick = function() { goToSlide(i); };
       dots.appendChild(d);
     });
+    startAuto();
   }
-  function carouselMove(dir) {
+
+  function goToSlide(i) {
+    currentSlide = (i + totalSlides) % totalSlides;
     const track = document.getElementById('carouselTrack');
-    const outer = track.parentElement;
-    const maxOffset = track.scrollWidth - outer.offsetWidth;
-    carouselOffset = Math.max(0, Math.min(carouselOffset + dir * carouselStep, maxOffset));
-    track.style.transform = 'translateX(-' + carouselOffset + 'px)';
-    updateDots();
-  }
-  function carouselGoTo(i) {
-    carouselOffset = i * carouselStep;
-    const track = document.getElementById('carouselTrack');
-    const outer = track.parentElement;
-    const maxOffset = track.scrollWidth - outer.offsetWidth;
-    carouselOffset = Math.min(carouselOffset, maxOffset);
-    track.style.transform = 'translateX(-' + carouselOffset + 'px)';
-    updateDots();
-  }
-  function updateDots() {
-    const track = document.getElementById('carouselTrack');
-    const imgs = track.querySelectorAll('img');
-    const dots = document.querySelectorAll('.carousel-dot');
-    const idx = Math.min(Math.round(carouselOffset / carouselStep), imgs.length - 1);
-    dots.forEach(function(d, i) {
-      d.classList.toggle('active', i === idx);
+    track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    document.querySelectorAll('.carousel-dot').forEach(function(d, idx) {
+      d.classList.toggle('active', idx === currentSlide);
     });
+  }
+
+  function startAuto() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(function() {
+      goToSlide(currentSlide + 1);
+    }, 3500);
+  }
+
+  function carouselMove(dir) {
+    goToSlide(currentSlide + dir);
+    startAuto();
   }
 </script>
 
