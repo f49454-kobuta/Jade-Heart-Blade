@@ -348,18 +348,18 @@
   .censored-img {
     width: 100%; height: 100%;
     object-fit: contain;
-    filter: blur(18px) brightness(0.5);
+    filter: brightness(0);
     transition: filter 0.4s ease;
-    background: rgba(10,2,8,0.6);
+    background: #000;
   }
   .censored-overlay {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 10px;
-    background: rgba(10,2,8,0.35);
+    background: rgba(0,0,0,0.9);
     transition: opacity 0.3s ease;
   }
-  .censored-wrap:hover .censored-overlay { background: rgba(10,2,8,0.2); }
+  .censored-wrap:hover .censored-overlay { background: rgba(0,0,0,0.85); }
   .eye-icon { filter: drop-shadow(0 0 8px rgba(255,100,160,0.6)); }
   .censored-label {
     font-size: 1rem; color: #ffb0d8; letter-spacing: 0.08em;
