@@ -200,9 +200,9 @@
     padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0;
   }
 
-  .price-tag { font-size: 0.9rem; color: #7a4060; text-decoration: line-through; margin-bottom: 4px; }
+  .price-tag { font-size: 1rem; color: #7a4060; text-decoration: line-through; margin-bottom: 6px; }
   .price-main {
-    font-size: 2.4rem; font-weight: 700; margin-bottom: 1.5rem;
+    font-size: 3.2rem; font-weight: 700; margin-bottom: 0.4rem;
     background: linear-gradient(90deg, #ffb0d8, #ff70b0, #ffb0d8);
     background-size: 200% auto;
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -503,9 +503,10 @@
         然而在這片血雨腥風的江湖裡，人心依舊藏著柔情。有人為情入世，有人為義而戰，也有人在刀光劍影之中守著一份難以割捨的牽絆。冷冽的兵刃之下，是俠骨，也是情深；看似無情的對決之中，往往牽動著難以言說的心意。<br><br>
         這是一個既有凌厲武學、快意恩仇，也有纏綿情感與人心糾葛的世界。在劍影與月色之間，江湖兒女的故事，才正要開始。
       </div>
-      <div class="price-tag">¥ 2,480</div>
-      <div class="price-main">¥ 1,980 <span>/ 限時特價</span></div>
-      <a class="btn-buy" href="https://nanakegames.booth.pm/items/8152540" target="_blank" rel="noopener">立即購買 · BOOTH</a>
+      <div class="price-tag">原價 ¥ 2,500</div>
+      <div class="price-main" id="twd-float">載入中…</div>
+      <div style="font-size:1rem; color:#a06080; margin-top:-1rem; margin-bottom:1.5rem; letter-spacing:0.05em;">限時特價</div>
+      <a class="btn-buy" href="https://nanakegames.booth.pm/items/8153365" target="_blank" rel="noopener">立即購買 · BOOTH</a>
       <div class="secure-note">
         🔒 <span>透過 BOOTH 安全付款 · 購買後即可下載</span>
       </div>
@@ -544,19 +545,42 @@
       </div>
       <script>
         (function(){
-          fetch('https://open.er-api.com/v6/latest/JPY')
-            .then(function(r){ return r.json(); })
-            .then(function(d){
+          function applyRate(rate) {
+            var twd = Math.round(1980 * rate);
+            var twdStr = 'NT$ ' + twd.toLocaleString();
+            var el = document.getElementById('twd-amount');
+            var meta = document.getElementById('rate-meta');
+            var fl = document.getElementById('twd-float');
+            if (el) el.textContent = twdStr;
+            if (meta) meta.textContent = '（¥1,980・1 JPY ≈ ' + rate.toFixed(4) + ' TWD）';
+            if (fl) fl.textContent = twdStr;
+          }
+          function showFallback() {
+            var el = document.getElementById('twd-amount');
+            var fl = document.getElementById('twd-float');
+            if (el) el.textContent = '約 NT$ 420';
+            if (fl) fl.textContent = '約 NT$ 420';
+            var meta = document.getElementById('rate-meta');
+            if (meta) meta.textContent = '（匯率暫時無法取得）';
+          }
+          // 主要 API：frankfurter（無 CORS 問題）
+          fetch('https://api.frankfurter.app/latest?from=JPY&to=TWD')
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
               var rate = d.rates && d.rates.TWD;
-              if(rate){
-                var twd = Math.round(1980 * rate);
-                document.getElementById('twd-amount').textContent = 'NT$ ' + twd.toLocaleString();
-                document.getElementById('rate-meta').textContent = '（1 JPY ≈ ' + rate.toFixed(4) + ' TWD）';
-              }
+              if (rate) { applyRate(rate); }
+              else { throw new Error('no TWD'); }
             })
-            .catch(function(){
-              document.getElementById('twd-amount').textContent = '約 NT$ 420';
-              document.getElementById('rate-meta').textContent = '（匯率暫時無法取得）';
+            .catch(function() {
+              // 備用 API
+              fetch('https://open.er-api.com/v6/latest/JPY')
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                  var rate = d.rates && d.rates.TWD;
+                  if (rate) { applyRate(rate); }
+                  else { showFallback(); }
+                })
+                .catch(showFallback);
             });
         })();
       </script>
