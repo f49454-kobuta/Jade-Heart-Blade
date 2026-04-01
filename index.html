@@ -503,12 +503,63 @@
         然而在這片血雨腥風的江湖裡，人心依舊藏著柔情。有人為情入世，有人為義而戰，也有人在刀光劍影之中守著一份難以割捨的牽絆。冷冽的兵刃之下，是俠骨，也是情深；看似無情的對決之中，往往牽動著難以言說的心意。<br><br>
         這是一個既有凌厲武學、快意恩仇，也有纏綿情感與人心糾葛的世界。在劍影與月色之間，江湖兒女的故事，才正要開始。
       </div>
-      <div class="price-tag">NT$ 599</div>
-      <div class="price-main">NT$ 399 <span>/ 限時特價</span></div>
-      <button class="btn-buy" style="opacity: 0.6; cursor: not-allowed;" disabled>即將啟用 · 敬請期待</button>
+      <div class="price-tag">¥ 2,480</div>
+      <div class="price-main">¥ 1,980 <span>/ 限時特價</span></div>
+      <a class="btn-buy" href="https://nanakegames.booth.pm/items/8152540" target="_blank" rel="noopener">立即購買 · BOOTH</a>
       <div class="secure-note">
-        🔒 <span>付款系統建置中，即將開放購買</span>
+        🔒 <span>透過 BOOTH 安全付款 · 購買後即可下載</span>
       </div>
+
+      <!-- 即時匯率換算卡片 -->
+      <div id="rate-card" style="
+        margin-top: 1.4rem;
+        background: rgba(40,8,24,0.75);
+        border: 1px solid rgba(180,50,100,0.3);
+        border-radius: 12px;
+        padding: 0.9rem 1.4rem;
+        font-size: 0.95rem;
+        color: #c090a8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      ">
+        <span style="color:#7a4060;">💱</span>
+        <span>¥1,980 約等於</span>
+        <span id="twd-amount" style="
+          font-size: 1.25rem;
+          font-weight: 700;
+          background: linear-gradient(90deg, #ffb0d8, #ff70b0, #ffb0d8);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 3s linear infinite;
+        ">載入中…</span>
+        <span id="rate-meta" style="font-size:0.8rem; color:#50253a;"></span>
+      </div>
+      <script>
+        (function(){
+          fetch('https://open.er-api.com/v6/latest/JPY')
+            .then(function(r){ return r.json(); })
+            .then(function(d){
+              var rate = d.rates && d.rates.TWD;
+              if(rate){
+                var twd = Math.round(1980 * rate);
+                document.getElementById('twd-amount').textContent = 'NT$ ' + twd.toLocaleString();
+                document.getElementById('rate-meta').textContent = '（1 JPY ≈ ' + rate.toFixed(4) + ' TWD）';
+              }
+            })
+            .catch(function(){
+              document.getElementById('twd-amount').textContent = '約 NT$ 420';
+              document.getElementById('rate-meta').textContent = '（匯率暫時無法取得）';
+            });
+        })();
+      </script>
     </div>
   </div>
 
@@ -835,13 +886,12 @@
 
   <div class="payment-section">
     <h2>支援付款方式</h2>
-    <div style="font-size: 0.95rem; color: #80506a; margin-bottom: 1rem;">付款系統即將啟用，敬請期待</div>
+    <div style="font-size: 0.95rem; color: #80506a; margin-bottom: 1rem;">透過 BOOTH 安全付款，支援多種方式</div>
     <div class="payment-methods">
-      <div class="pay-badge" style="opacity:0.4;">💳 信用卡</div>
-      <div class="pay-badge" style="opacity:0.4;">🏧 ATM 轉帳</div>
-      <div class="pay-badge" style="opacity:0.4;">🏪 7-11 超商</div>
-      <div class="pay-badge" style="opacity:0.4;">🏪 全家 FamilyMart</div>
-      <div class="pay-badge" style="opacity:0.4;">🏪 萊爾富 Hi-Life</div>
+      <div class="pay-badge">💳 信用卡</div>
+      <div class="pay-badge">🏧 銀行轉帳</div>
+      <div class="pay-badge">💴 PayPay</div>
+      <div class="pay-badge">🛍️ Amazon Pay</div>
     </div>
   </div>
 
